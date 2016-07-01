@@ -88,6 +88,7 @@ struct _ply_terminal
         ply_fd_watch_t      *fd_watch;
         ply_terminal_color_t foreground_color;
         ply_terminal_color_t background_color;
+        ply_terminal_mode_t  mode;
 
         uint8_t              original_color_palette[TEXT_PALETTE_SIZE];
         uint8_t              color_palette[TEXT_PALETTE_SIZE];
@@ -135,6 +136,7 @@ ply_terminal_new (const char *device_name)
         terminal->fd = -1;
         terminal->vt_number = -1;
         terminal->initial_vt_number = -1;
+        terminal->mode = PLY_TERMINAL_MODE_UNSET;
 
         return terminal;
 }
@@ -751,6 +753,10 @@ ply_terminal_set_mode (ply_terminal_t     *terminal,
         if (terminal->should_ignore_mode_changes)
                 return;
 
+        if (terminal->mode == mode)
+                return;
+
+        terminal->mode = mode;
         switch (mode) {
         case PLY_TERMINAL_MODE_TEXT:
                 if (ioctl (terminal->fd, KDSETMODE, KD_TEXT) < 0)

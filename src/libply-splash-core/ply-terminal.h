@@ -50,6 +50,7 @@ typedef enum
 
 typedef enum
 {
+        PLY_TERMINAL_MODE_UNSET,
         PLY_TERMINAL_MODE_TEXT,
         PLY_TERMINAL_MODE_GRAPHICS
 } ply_terminal_mode_t;
